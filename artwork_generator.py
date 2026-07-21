@@ -14,18 +14,29 @@ import svgwrite
 from PIL import ImageFont
 
 SIZE = 1600
+# Each font maps to a LIST of candidate paths, tried in order - font package
+# layouts differ across distros/versions (e.g. Ubuntu ships
+# fonts-roboto-hinted at .../roboto/hinted/..., Debian trixie only has
+# fonts-roboto-unhinted at .../roboto/unhinted/RobotoTTF/...), so a single
+# hardcoded path breaks portability. First existing path wins.
 FONT_FILES = {
-    "Bebas Neue": "/usr/share/fonts/opentype/bebas-neue/BebasNeue-Bold.otf",
-    "Inter": "/usr/share/fonts/opentype/inter/Inter-Regular.otf",
-    "GFS Baskerville": "/usr/share/fonts/truetype/baskerville/GFSBaskerville.otf",
-    "Lora": "/usr/share/fonts/truetype/google-fonts/Lora-Variable.ttf",
-    "Montserrat": "/usr/share/fonts/truetype/montserrat/Montserrat-SemiBold.ttf",
-    "Open Sans": "/usr/share/fonts/truetype/open-sans/OpenSans-Regular.ttf",
-    "Dancing Script": "/usr/share/fonts/opentype/dancingscript/DancingScript-Bold.otf",
-    "Quicksand": "/usr/share/fonts/truetype/quicksand/Quicksand-Regular.ttf",
-    "Roboto Slab": "/usr/share/fonts/opentype/roboto/slab/RobotoSlab-Bold.otf",
-    "Roboto": "/usr/share/fonts/truetype/roboto/hinted/Roboto-Regular.ttf",
-    "Poppins": "/usr/share/fonts/truetype/google-fonts/Poppins-Bold.ttf",
+    "Bebas Neue": ["/usr/share/fonts/opentype/bebas-neue/BebasNeue-Bold.otf"],
+    "Inter": ["/usr/share/fonts/opentype/inter/Inter-Regular.otf"],
+    "GFS Baskerville": ["/usr/share/fonts/truetype/baskerville/GFSBaskerville.otf"],
+    "Lora": ["/usr/share/fonts/truetype/google-fonts/Lora-Variable.ttf",
+             "/usr/share/fonts/truetype/lora/Lora-Regular.ttf"],
+    "Montserrat": ["/usr/share/fonts/truetype/montserrat/Montserrat-SemiBold.ttf",
+                   "/usr/share/fonts/opentype/montserrat/Montserrat-SemiBold.otf"],
+    "Open Sans": ["/usr/share/fonts/truetype/open-sans/OpenSans-Regular.ttf"],
+    "Dancing Script": ["/usr/share/fonts/opentype/dancingscript/DancingScript-Bold.otf"],
+    "Quicksand": ["/usr/share/fonts/truetype/quicksand/Quicksand-Regular.ttf"],
+    "Roboto Slab": ["/usr/share/fonts/opentype/roboto/slab/RobotoSlab-Bold.otf",
+                     "/usr/share/fonts/truetype/roboto/slab/RobotoSlab-Bold.ttf"],
+    "Roboto": ["/usr/share/fonts/truetype/roboto/hinted/Roboto-Regular.ttf",
+               "/usr/share/fonts/truetype/roboto/unhinted/RobotoTTF/Roboto-Regular.ttf",
+               "/usr/share/fonts/truetype/roboto-unhinted/Roboto-Regular.ttf"],
+    "Poppins": ["/usr/share/fonts/truetype/google-fonts/Poppins-Bold.ttf",
+                "/usr/share/fonts/truetype/poppins/Poppins-Bold.ttf"],
 }
 
 
@@ -61,25 +72,51 @@ def assign_roles(colors):
     return {"bg": bg, "ink": ink, "accent1": accent1, "accent2": accent2, "accent3": accent3}
 
 
+_FONT_PATH_CACHE = {}
+
+
+def _first_existing(paths):
+    return next((p for p in paths if p and os.path.exists(p)), None)
+
+
+def _find_by_filename_glob(font_family):
+    """Last-ditch search: walk common font roots for anything whose
+    filename loosely matches the family name, in case the package layout
+    doesn't match any hardcoded candidate at all."""
+    import glob
+    slug = font_family.replace(" ", "")
+    for root in ("/usr/share/fonts", "/usr/local/share/fonts"):
+        for ext in ("ttf", "otf"):
+            matches = glob.glob(f"{root}/**/*{slug}*.{ext}", recursive=True)
+            if matches:
+                return sorted(matches)[0]
+    return None
+
+
 def _resolve_font_path(font_family):
     """Falls back gracefully if a font package didn't land at the expected
     path on this OS/container (e.g. a different Linux distro's font
     packaging layout) - avoids hard-crashing the whole render."""
-    path = FONT_FILES.get(font_family)
-    if path and os.path.exists(path):
-        return path
-    for fallback in (FONT_FILES.get("Inter"), FONT_FILES.get("Roboto")):
-        if fallback and os.path.exists(fallback):
-            return fallback
-    # last resort: whatever DejaVu ships with (present on virtually every
-    # Debian/Ubuntu-based system, including Streamlit Cloud, by default)
-    for guess in ("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
-                  "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"):
-        if os.path.exists(guess):
-            return guess
-    raise FileNotFoundError(
-        f"No usable font file found for '{font_family}' and no fallback font "
-        f"was present either. Install fonts per packages.txt.")
+    if font_family in _FONT_PATH_CACHE:
+        return _FONT_PATH_CACHE[font_family]
+
+    candidates = FONT_FILES.get(font_family, [])
+    resolved = (
+        _first_existing(candidates)
+        or _find_by_filename_glob(font_family)
+        or _first_existing(FONT_FILES.get("Inter", []))
+        or _first_existing(FONT_FILES.get("Roboto", []))
+        or _first_existing([
+            "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
+            "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+        ])
+    )
+    if not resolved:
+        raise FileNotFoundError(
+            f"No usable font file found for '{font_family}' and no fallback "
+            f"font was present either. Check packages.txt installed correctly.")
+    _FONT_PATH_CACHE[font_family] = resolved
+    return resolved
 
 
 def fit_font_size(text, font_family, max_width, start_size=180, min_size=36):
