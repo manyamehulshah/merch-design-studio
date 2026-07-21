@@ -1,0 +1,11 @@
+fonts-montserrat
+fonts-bebas-neue
+fonts-dancingscript
+fonts-open-sans
+fonts-quicksand
+fonts-roboto-hinted
+fonts-roboto-slab
+fonts-inter
+libcairo2
+libpango-1.0-0
+libpangocairo-1.0-0

@@ -1,0 +1,5 @@
+streamlit
+svgwrite
+cairosvg
+reportlab
+pillow

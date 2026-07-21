@@ -1,0 +1,128 @@
+{
+  "palettes": [
+    {
+      "id": "midnight_espresso",
+      "name": "Midnight Espresso",
+      "colors": ["#1B1210", "#3C2A21", "#C89B6D", "#F5E9DA", "#8C6A4A"],
+      "tags": ["luxury", "coffee", "moody", "premium", "heritage", "warm", "food-beverage"]
+    },
+    {
+      "id": "neon_y2k",
+      "name": "Neon Y2K",
+      "colors": ["#12121A", "#FF2FB0", "#00F0FF", "#FFF200", "#FFFFFF"],
+      "tags": ["genz", "streetwear", "energetic", "youthful", "bold", "trendy", "nightlife"]
+    },
+    {
+      "id": "sage_minimal",
+      "name": "Sage Minimal",
+      "colors": ["#F3F1EA", "#A8B79A", "#4A5943", "#2B2B2B", "#E8E2D5"],
+      "tags": ["wellness", "minimal", "organic", "calm", "natural", "clean", "skincare", "sustainable"]
+    },
+    {
+      "id": "terracotta_sunset",
+      "name": "Terracotta Sunset",
+      "colors": ["#F4E1D2", "#E8A87C", "#C1440E", "#6B4226", "#2B2B2B"],
+      "tags": ["artisanal", "warm", "earthy", "handmade", "rustic", "food-beverage", "craft"]
+    },
+    {
+      "id": "royal_heritage",
+      "name": "Royal Heritage",
+      "colors": ["#0B1D3A", "#C9A24B", "#FFFFFF", "#7A1F2B", "#1A1A1A"],
+      "tags": ["luxury", "classic", "heritage", "formal", "premium", "timeless"]
+    },
+    {
+      "id": "cyber_mono",
+      "name": "Cyber Mono",
+      "colors": ["#0D0D0D", "#39FF14", "#FFFFFF", "#7A7A7A", "#FF3131"],
+      "tags": ["genz", "tech", "edgy", "streetwear", "bold", "gaming", "trendy"]
+    },
+    {
+      "id": "blush_studio",
+      "name": "Blush Studio",
+      "colors": ["#FBEDE8", "#F0B8AC", "#D97D6A", "#5C4A42", "#2B2B2B"],
+      "tags": ["feminine", "soft", "lifestyle", "beauty", "gentle", "wellness", "boutique"]
+    },
+    {
+      "id": "coastal_linen",
+      "name": "Coastal Linen",
+      "colors": ["#EAF3F3", "#9FC6CC", "#3F6C77", "#1B2E33", "#E8DCC8"],
+      "tags": ["relaxed", "coastal", "natural", "calm", "resort", "clean", "minimal"]
+    },
+    {
+      "id": "acid_pop",
+      "name": "Acid Pop",
+      "colors": ["#F7F3E9", "#FF5C39", "#FFC845", "#1A1A1A", "#3D5A80"],
+      "tags": ["genz", "playful", "bold", "energetic", "streetwear", "youthful", "trendy"]
+    },
+    {
+      "id": "forest_craft",
+      "name": "Forest Craft",
+      "colors": ["#F2EDE4", "#5C7A5C", "#2E4034", "#8C4A2F", "#1A1A1A"],
+      "tags": ["outdoor", "craft", "rustic", "natural", "heritage", "earthy", "adventure"]
+    }
+  ],
+  "typography_pairings": [
+    {
+      "id": "bold_street",
+      "name": "Bold Street",
+      "heading_font": "Bebas Neue",
+      "heading_style": "Bold",
+      "body_font": "Inter",
+      "body_style": "Regular",
+      "tags": ["genz", "streetwear", "bold", "edgy", "energetic", "gaming", "trendy"]
+    },
+    {
+      "id": "heritage_classic",
+      "name": "Heritage Classic",
+      "heading_font": "GFS Baskerville",
+      "heading_style": "Regular",
+      "body_font": "Lora",
+      "body_style": "Regular",
+      "tags": ["luxury", "heritage", "classic", "formal", "premium", "timeless"]
+    },
+    {
+      "id": "modern_clean",
+      "name": "Modern Clean",
+      "heading_font": "Montserrat",
+      "heading_style": "SemiBold",
+      "body_font": "Open Sans",
+      "body_style": "Regular",
+      "tags": ["modern", "minimal", "clean", "professional", "versatile", "wellness", "tech"]
+    },
+    {
+      "id": "handmade_charm",
+      "name": "Handmade Charm",
+      "heading_font": "Dancing Script",
+      "heading_style": "Bold",
+      "body_font": "Quicksand",
+      "body_style": "Regular",
+      "tags": ["artisanal", "feminine", "handmade", "playful", "boutique", "craft"]
+    },
+    {
+      "id": "rugged_craft",
+      "name": "Rugged Craft",
+      "heading_font": "Roboto Slab",
+      "heading_style": "Bold",
+      "body_font": "Roboto",
+      "body_style": "Regular",
+      "tags": ["rustic", "outdoor", "craft", "industrial", "sturdy", "adventure", "heritage"]
+    },
+    {
+      "id": "friendly_round",
+      "name": "Friendly Round",
+      "heading_font": "Poppins",
+      "heading_style": "Bold",
+      "body_font": "Inter",
+      "body_style": "Regular",
+      "tags": ["genz", "friendly", "approachable", "playful", "youthful", "trendy"]
+    }
+  ],
+  "motif_styles": [
+    {"id": "emblem_badge", "name": "Emblem Badge", "tags": ["luxury", "heritage", "classic", "craft", "formal", "rustic"]},
+    {"id": "geo_grid", "name": "Geometric Grid", "tags": ["modern", "minimal", "tech", "clean", "genz"]},
+    {"id": "organic_blob", "name": "Organic Blob", "tags": ["wellness", "organic", "natural", "calm", "feminine", "soft"]},
+    {"id": "botanical_line", "name": "Botanical Line Art", "tags": ["natural", "wellness", "boutique", "coastal", "craft", "feminine"]},
+    {"id": "retro_sunburst", "name": "Retro Sunburst", "tags": ["genz", "energetic", "bold", "playful", "trendy", "streetwear"]},
+    {"id": "halftone_pop", "name": "Halftone Pop", "tags": ["genz", "streetwear", "bold", "edgy", "energetic", "gaming"]}
+  ]
+}
