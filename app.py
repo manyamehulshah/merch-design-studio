@@ -12,7 +12,25 @@ import tempfile
 
 import streamlit as st
 
-ENGINE_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "engine")
+def _find_engine_dir():
+    """Locate the engine/ folder without assuming a fixed nesting depth -
+    handles both the intended app/ + engine/ layout and a flattened repo
+    where everything landed in one directory (no engine/ subfolder at all -
+    in that case brief_parser.py etc. are already importable from here)."""
+    here = os.path.dirname(os.path.abspath(__file__))
+    candidates = [here]
+    d = here
+    for _ in range(4):
+        candidates.append(os.path.join(d, "engine"))
+        d = os.path.dirname(d)
+        candidates.append(d)
+    for c in candidates:
+        if os.path.isfile(os.path.join(c, "brief_parser.py")):
+            return c
+    return here  # last resort: let the following imports raise a clear error
+
+
+ENGINE_DIR = _find_engine_dir()
 sys.path.insert(0, ENGINE_DIR)
 
 from brief_parser import parse_brief

@@ -9,7 +9,32 @@ import json
 import os
 import re
 
-DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data")
+
+def _find_data_dir():
+    """Locate the data/ folder without assuming a fixed nesting depth -
+    works whether this file lives in engine/ next to a sibling data/
+    folder, or everything got flattened into one directory during upload
+    (e.g. GitHub drag-and-drop losing subfolder structure)."""
+    here = os.path.dirname(os.path.abspath(__file__))
+    candidates = [here]
+    # walk up a few levels, checking both "this dir" and "this dir/data"
+    d = here
+    for _ in range(4):
+        candidates.append(os.path.join(d, "data"))
+        d = os.path.dirname(d)
+        candidates.append(d)
+    candidates.append(os.path.join(os.getcwd(), "data"))
+    for c in candidates:
+        if os.path.isfile(os.path.join(c, "word_banks.json")):
+            return c
+    raise FileNotFoundError(
+        "Could not find data/word_banks.json anywhere near "
+        f"{here} or in the current working directory. Make sure the "
+        "'data' folder (with style_bank.json and word_banks.json) was "
+        "uploaded to the repo.")
+
+
+DATA_DIR = _find_data_dir()
 
 
 def _load(name):

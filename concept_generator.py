@@ -8,7 +8,29 @@ import json
 import os
 import random
 
-DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data")
+
+def _find_data_dir():
+    """Locate the data/ folder without assuming a fixed nesting depth -
+    see brief_parser.py's copy of this function for why."""
+    here = os.path.dirname(os.path.abspath(__file__))
+    candidates = [here]
+    d = here
+    for _ in range(4):
+        candidates.append(os.path.join(d, "data"))
+        d = os.path.dirname(d)
+        candidates.append(d)
+    candidates.append(os.path.join(os.getcwd(), "data"))
+    for c in candidates:
+        if os.path.isfile(os.path.join(c, "style_bank.json")):
+            return c
+    raise FileNotFoundError(
+        "Could not find data/style_bank.json anywhere near "
+        f"{here} or in the current working directory. Make sure the "
+        "'data' folder (with style_bank.json and word_banks.json) was "
+        "uploaded to the repo.")
+
+
+DATA_DIR = _find_data_dir()
 
 
 def _load(name):
