@@ -3,7 +3,7 @@ fonts-bebas-neue
 fonts-dancingscript
 fonts-open-sans
 fonts-quicksand
-fonts-roboto-hinted
+fonts-roboto
 fonts-roboto-slab
 fonts-inter
 libcairo2
